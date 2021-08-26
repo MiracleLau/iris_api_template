@@ -21,8 +21,6 @@ func main(){
 
 	api.InitRoute()
 
-	api.SetApplicationLog(config.Config.LogPath)
-
 	db.Connect()
 
 	db.AutoMigrate()

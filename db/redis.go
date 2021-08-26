@@ -2,24 +2,20 @@ package db
 
 import (
 	"api_template/config"
-	"github.com/kataras/iris/v12/sessions/sessiondb/redis"
-	"sync"
+	"github.com/gofiber/storage/redis"
 )
 
-var once sync.Once
-
-func NewRedis() *redis.Database {
-	var database *redis.Database
-	once.Do(func() {
+func NewRedis() *redis.Storage  {
 		rd := config.Config.Redis
-		database = redis.New(redis.Config{
-			Network:   rd.Network,
-			Addr:      rd.Addr + ":" + rd.Port,
-			Prefix:    rd.Prefix,
-			Password:  rd.Password,
-			MaxActive: 20,
-		})
-	})
 
-	return database
+	// Initialize custom config
+	store := redis.New(redis.Config{
+		Host:     rd.Addr,
+		Port:     rd.Port,
+		Username: rd.User,
+		Password: rd.Password,
+		Database: rd.DB,
+		Reset:    false,
+	})
+	return store
 }
